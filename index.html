@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Análisis de Insights de Instagram</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --light: #f8f9fa;
+            --dark: #2d3748;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --info: #4299e1;
+            --text: #2d3748;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,249,250,0.9) 100%);
+            --gradient-success: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            --gradient-warning: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            --gradient-info: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: var(--gradient-bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+            background-attachment: fixed;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Encabezado */
+        header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+        
+        .logo {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            position: relative;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            position: relative;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+        
+        /* Navegación */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        nav li {
+            margin: 0 15px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            background: rgba(102, 126, 234, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        nav a:hover {
+            background: var(--gradient-primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* Secciones */
+        section {
+            padding: 5rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 120px;
+            height: 5px;
+            background: var(--gradient-secondary);
+            margin: 20px auto;
+            border-radius: 5px;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            color: var(--text);
+            font-weight: 700;
+            position: relative;
+        }
+        
+        .section-title p {
+            font-size: 1.3rem;
+            color: var(--dark);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+        
+        /* Tarjetas de contenido */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .card {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-primary);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .card-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .card-header i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .card-body {
+            padding: 2.5rem 2rem;
+        }
+        
+        .card h3 {
+            font-size: 1.7rem;
+            margin-bottom: 1rem;
+            color: white;
+            font-weight: 600;
+        }
+        
+        /* Listas */
+        ul.feature-list {
+            list-style: none;
+        }
+        
+        ul.feature-list li {
+            margin-bottom: 1.2rem;
+            padding-left: 40px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        ul.feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.3rem;
+            background: rgba(72, 187, 120, 0.1);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--success);
+        }
+        
+        /* Métricas y KPI */
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .metric-card {
+            background: var(--gradient-card);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .metric-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .metric-1 {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .metric-2 {
+            background: var(--gradient-success);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .metric-3 {
+            background: var(--gradient-warning);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .metric-4 {
+            background: var(--gradient-info);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+        
+        .metric-1 .metric-value {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .metric-2 .metric-value {
+            background: var(--gradient-success);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .metric-3 .metric-value {
+            background: var(--gradient-warning);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .metric-4 .metric-value {
+            background: var(--gradient-info);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Tablas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        th, td {
+            padding: 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        th {
+            background: var(--gradient-primary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:hover {
+            background: rgba(102, 126, 234, 0.03);
+        }
+        
+        /* Consejos */
+        .tip-box {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+            border-left: 5px solid transparent;
+            border-image: var(--gradient-secondary) 1;
+            padding: 2rem;
+            border-radius: 0 15px 15px 0;
+            margin: 2.5rem 0;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .tip-box::before {
+            content: "💡";
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            z-index: 1;
+        }
+        
+        .tip-box::after {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-secondary);
+            z-index: 0;
+        }
+        
+        /* Gráficos simulados */
+        .chart-container {
+            background: var(--gradient-card);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .chart {
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 2rem;
+        }
+        
+        .bar {
+            background: var(--gradient-primary);
+            width: 40px;
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            transition: height 0.5s ease;
+        }
+        
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--gradient-primary);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 5rem;
+            position: relative;
+        }
+        
+        footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+        
+        /* Botones */
+        .btn {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5);
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav li {
+                margin: 8px 0;
+                width: 100%;
+                text-align: center;
+            }
+            
+            nav a {
+                justify-content: center;
+            }
+            
+            .card-container, .metrics-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title::after {
+                width: 100px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo"><i class="fas fa-chart-line"></i></div>
+            <h1>Manual de Análisis de Insights de Instagram</h1>
+            <p class="subtitle">Aprende a interpretar datos y métricas para optimizar tu estrategia en Instagram</p>
+            <a href="#introduccion" class="btn" style="margin-top: 1.5rem;">
+                <i class="fas fa-graduation-cap"></i> Comenzar a aprender
+            </a>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#introduccion"><i class="fas fa-home"></i> Introducción</a></li>
+                <li><a href="#metricas"><i class="fas fa-chart-bar"></i> Métricas Clave</a></li>
+                <li><a href="#audiencia"><i class="fas fa-users"></i> Análisis de Audiencia</a></li>
+                <li><a href="#contenido"><i class="fas fa-photo-video"></i> Contenido y Publicaciones</a></li>
+                <li><a href="#estories"><i class="fas fa-play-circle"></i> Stories y Reels</a></li>
+                <li><a href="#accion"><i class="fas fa-rocket"></i> Plan de Acción</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <section id="introduccion">
+            <div class="section-title">
+                <h2>Introducción a los Insights de Instagram</h2>
+                <p>Domina el análisis de datos para tomar decisiones informadas</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="color: var(--text); margin-bottom: 1.5rem;">¿Qué son los Insights de Instagram?</h3>
+                    <p>Los Insights son las estadísticas y métricas que Instagram proporciona a las cuentas profesionales para ayudarte a entender el rendimiento de tu contenido y el comportamiento de tu audiencia.</p>
+                    
+                    <div class="tip-box">
+                        <strong>Importante:</strong> Solo las cuentas profesionales de Instagram tienen acceso a Insights. Si tienes una cuenta personal, necesitas cambiarla a profesional (es gratuito).
+                    </div>
+                    
+                    <h4 style="color: var(--text); margin: 2rem 0 1rem;">Cómo acceder a los Insights:</h4>
+                    <ul class="feature-list">
+                        <li>Ve a tu perfil y toca el ícono de menú (三条線) en la esquina superior derecha</li>
+                        <li>Selecciona "Insights" desde el menú desplegable</li>
+                        <li>Explora las diferentes pestañas: Resumen, Contenido que compartiste y Audiencia</li>
+                        <li>Para ver Insights específicos de una publicación, ve a la publicación y toca "Ver Insights"</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="metrics-container">
+                <div class="metric-card metric-1">
+                    <i class="fas fa-eye metric-icon"></i>
+                    <div class="metric-value">Alcance</div>
+                    <p>Número de cuentas únicas que vieron tu contenido</p>
+                </div>
+                
+                <div class="metric-card metric-2">
+                    <i class="fas fa-users metric-icon"></i>
+                    <div class="metric-value">Impresiones</div>
+                    <p>Número total de veces que se mostró tu contenido</p>
+                </div>
+                
+                <div class="metric-card metric-3">
+                    <i class="fas fa-heart metric-icon"></i>
+                    <div class="metric-value">Interacciones</div>
+                    <p>Likes, comentarios, guardados y compartidos</p>
+                </div>
+                
+                <div class="metric-card metric-4">
+                    <i class="fas fa-user-plus metric-icon"></i>
+                    <div class="metric-value">Seguidores</div>
+                    <p>Crecimiento y comportamiento de tu audiencia</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="metricas">
+            <div class="section-title">
+                <h2>Métricas Clave a Monitorear</h2>
+                <p>Las estadísticas más importantes para medir tu éxito</p>
+            </div>
+            
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-bullseye"></i>
+                        <h3>Alcance e Impresiones</h3>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Alcance:</strong> Cuentas únicas que vieron tu contenido</p>
+                        <p><strong>Impresiones:</strong> Veces que se mostró tu contenido (puede incluir vistas múltiples de la misma persona)</p>
+                        
+                        <ul class="feature-list">
+                            <li>Compara alcance vs impresiones para entender la frecuencia de visualización</li>
+                            <li>Un alcance alto con engagement bajo indica problemas en el contenido</li>
+                            <li>Monitorea la tendencia semanal de alcance</li>
+                            <li>Identifica qué tipo de contenido genera mayor alcance</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-handshake"></i>
+                        <h3>Engagement</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Interacciones con tu contenido: likes, comentarios, guardados, compartidos y respuestas en Stories.</p>
+                        
+                        <ul class="feature-list">
+                            <li><strong>Tasa de Engagement:</strong> (Total interacciones / Seguidores) x 100</li>
+                            <li>Una tasa > 3% es excelente para cuentas medianas</li>
+                            <li>Los contenidos guardados son señal de alto valor</li>
+                            <li>Los compartidos expanden tu alcance orgánicamente</li>
+                            <li>Respuestas en Stories indican alta participación</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-user-friends"></i>
+                        <h3>Crecimiento de Seguidores</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Análisis de cómo crece (o decrece) tu comunidad en Instagram.</p>
+                        
+                        <ul class="feature-list">
+                            <li>Monitorea seguidores ganados vs perdidos diariamente</li>
+                            <li>Identifica qué publicaciones atraen más seguidores nuevos</li>
+                            <li>Analiza las horas/días de mayor crecimiento</li>
+                            <li>Compara el crecimiento orgánico vs promocionado</li>
+                            <li>Establece metas realistas de crecimiento mensual</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3 style="color: var(--text); margin-bottom: 1rem;">Ejemplo de Métricas Semanales</h3>
+                <div class="chart">
+                    <div class="bar" style="height: 80%;">
+                        <span class="bar-value">3.5%</span>
+                        <span class="bar-label">Lun</span>
+                    </div>
+                    <div class="bar" style="height: 65%;">
+                        <span class="bar-value">2.8%</span>
+                        <span class="bar-label">Mar</span>
+                    </div>
+                    <div class="bar" style="height: 90%;">
+                        <span class="bar-value">4.2%</span>
+                        <span class="bar-label">Mié</span>
+                    </div>
+                    <div class="bar" style="height: 75%;">
+                        <span class="bar-value">3.1%</span>
+                        <span class="bar-label">Jue</span>
+                    </div>
+                    <div class="bar" style="height: 95%;">
+                        <span class="bar-value">4.8%</span>
+                        <span class="bar-label">Vie</span>
+                    </div>
+                    <div class="bar" style="height: 85%;">
+                        <span class="bar-value">3.9%</span>
+                        <span class="bar-label">Sáb</span>
+                    </div>
+                    <div class="bar" style="height: 70%;">
+                        <span class="bar-value">3.0%</span>
+                        <span class="bar-label">Dom</span>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 2rem; font-style: italic;">Tasa de Engagement por día de la semana</p>
+            </div>
+        </section>
+        
+        <section id="audiencia">
+            <div class="section-title">
+                <h2>Análisis de Audiencia</h2>
+                <p>Conoce a tu comunidad para crear contenido más relevante</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="color: var(--text); margin-bottom: 2rem;">Datos Demográficos de tu Audiencia</h3>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Característica</th>
+                                <th>¿Qué analizar?</th>
+                                <th>¿Por qué es importante?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Ubicación</strong></td>
+                                <td>Ciudades y países con más seguidores</td>
+                                <td>Adaptar horarios de publicación y contenido local</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Edad</strong></td>
+                                <td>Rangos de edad predominantes</td>
+                                <td>Crear contenido apropiado para cada generación</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Género</strong></td>
+                                <td>Distribución por género</td>
+                                <td>Personalizar mensajes y tono de comunicación</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Horarios Activos</strong></td>
+                                <td>Días y horas con mayor actividad</td>
+                                <td>Optimizar calendario de publicaciones</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="tip-box">
+                        <strong>Consejo:</strong> Compara tu audiencia actual con tu audiencia ideal. Si hay diferencias significativas, ajusta tu estrategia de contenido para atraer a tu público objetivo.
+                    </div>
+                    
+                    <h4 style="color: var(--text); margin: 2rem 0 1rem;">Preguntas clave para analizar tu audiencia:</h4>
+                    <ul class="feature-list">
+                        <li>¿Qué días y horas está más activa mi audiencia?</li>
+                        <li>¿Qué ciudades/países representan la mayor parte de mis seguidores?</li>
+                        <li>¿Cuál es el rango de edad predominante?</li>
+                        <li>¿Cómo ha evolucionado mi audiencia en los últimos meses?</li>
+                        <li>¿Qué contenido genera más interacción con mi audiencia objetivo?</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="contenido">
+            <div class="section-title">
+                <h2>Análisis de Contenido y Publicaciones</h2>
+                <p>Identifica qué funciona y qué no en tu estrategia de contenido</p>
+            </div>
+            
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie"></i>
+                        <h3>Rendimiento por Tipo de Contenido</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Compara el desempeño de diferentes formatos:</p>
+                        
+                        <ul class="feature-list">
+                            <li><strong>Publicaciones Feed:</strong> Fotos vs Carousel vs Videos</li>
+                            <li><strong>Stories:</strong> Tasa de finalización y respuestas</li>
+                            <li><strong>Reels:</strong> Tasa de reproducción y alcance</li>
+                            <li><strong>IGTV:</strong> Tiempo de visualización promedio</li>
+                        </ul>
+                        
+                        <div class="tip-box" style="margin: 1.5rem 0;">
+                            <strong>Dato:</strong> Los Reels suelen tener mayor alcance que las publicaciones tradicionales del feed.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-tags"></i>
+                        <h3>Análisis de Hashtags</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Evalúa la efectividad de tus hashtags:</p>
+                        
+                        <ul class="feature-list">
+                            <li>Identifica qué hashtags generan más alcance</li>
+                            <li>Analiza la combinación ideal de hashtags</li>
+                            <li>Monitorea hashtags de la competencia</li>
+                            <li>Prueba nuevos hashtags regularmente</li>
+                            <li>Evita hashtags saturados o irrelevantes</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-calendar-check"></i>
+                        <h3>Mejores Horarios</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Optimiza tu calendario de publicaciones:</p>
+                        
+                        <ul class="feature-list">
+                            <li>Analiza Insights de audiencia para horarios activos</li>
+                            <li>Prueba diferentes horarios y días</li>
+                            <li>Considera zonas horarias de tu audiencia principal</li>
+                            <li>Monitorea el rendimiento por franja horaria</li>
+                            <li>Ajusta según cambios estacionales</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="estories">
+            <div class="section-title">
+                <h2>Análisis de Stories y Reels</h2>
+                <p>Métricas específicas para contenido efímero y video</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="color: var(--text); margin-bottom: 2rem;">Métricas Específicas para Stories</h3>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Métrica</th>
+                                <th>Descripción</th>
+                                <th>Objetivo Ideal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Impresiones</strong></td>
+                                <td>Veces que se vio tu Story</td>
+                                <td>Alto, indica buen posicionamiento</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Alcance</strong></td>
+                                <td>Cuentas únicas que vieron tu Story</td>
+                                <td>Similar o mayor que publicaciones del feed</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Respuestas</strong></td>
+                                <td>Número de respuestas recibidas</td>
+                                <td>Alto, indica contenido interactivo</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Salidas</strong></td>
+                                <td>Personas que salieron de tu Story</td>
+                                <td>Bajo, indica contenido atractivo</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Siguiente Story</strong></td>
+                                <td>Personas que pasaron al siguiente Story</td>
+                                <td>Alto, indica buen flujo de contenido</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h4 style="color: var(--text); margin: 2rem 0 1rem;">Métricas para Reels:</h4>
+                    <ul class="feature-list">
+                        <li><strong>Reproducciones:</strong> Número total de veces que se reprodujo tu Reel</li>
+                        <li><strong>Alcance:</strong> Cuentas únicas que vieron tu Reel</li>
+                        <li><strong>Likes:</strong> Número de likes en el Reel</li>
+                        <li><strong>Comentarios:</strong> Número de comentarios recibidos</li>
+                        <li><strong>Guardados:</strong> Veces que se guardó el Reel</li>
+                        <li><strong>Compartidos:</strong> Veces que se compartió el Reel</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="accion">
+            <div class="section-title">
+                <h2>Plan de Acción Basado en Insights</h2>
+                <p>Convierte datos en estrategias efectivas</p>
+            </div>
+            
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>Análisis Semanal</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Establece una rutina de análisis:</p>
+                        
+                        <ul class="feature-list">
+                            <li>Revisa métricas clave cada lunes</li>
+                            <li>Identifica las 3 publicaciones con mejor rendimiento</li>
+                            <li>Analiza las 3 con peor rendimiento</li>
+                            <li>Compara con la semana anterior</li>
+                            <li>Registra insights en una hoja de cálculo</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-rocket"></i>
+                        <h3>Optimización Continua</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Ajusta tu estrategia basándote en datos:</p>
+                        
+                        <ul class="feature-list">
+                            <li>Repite lo que funciona</li>
+                            <li>Experimenta con nuevos formatos</li>
+                            <li>Ajusta horarios de publicación</li>
+                            <li>Optimiza hashtags regularmente</li>
+                            <li>Prueba diferentes llamadas a la acción</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-bullseye"></i>
+                        <h3>Establecimiento de Metas</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Define objetivos SMART:</p>
+                        
+                        <ul class="feature-list">
+                            <li><strong>Específicas:</strong> Aumentar engagement en 15%</li>
+                            <li><strong>Medibles:</strong> Seguir métricas concretas</li>
+                            <li><strong>Alcanzables:</strong> Metas realistas</li>
+                            <li><strong>Relevantes:</strong> Alineadas con tus objetivos</li>
+                            <li><strong>Temporales:</strong> Con fechas límite</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <strong>Plan de acción recomendado:</strong> 
+                <ol style="margin-left: 2rem; margin-top: 1rem;">
+                    <li>Revisa tus Insights cada lunes durante 30 minutos</li>
+                    <li>Identifica patrones y tendencias</li>
+                    <li>Ajusta tu calendario de contenido para la semana</li>
+                    <li>Experimenta con al menos una nueva estrategia por semana</li>
+                    <li>Evalúa resultados y repite el ciclo</li>
+                </ol>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>Manual de Análisis de Insights de Instagram para Emprendedores</p>
+            <p>© 2023 - Aprende a tomar decisiones basadas en datos</p>
+        </div>
+    </footer>
+</body>
+</html>
